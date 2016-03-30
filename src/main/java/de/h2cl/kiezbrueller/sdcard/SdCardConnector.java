@@ -53,7 +53,7 @@ public class SdCardConnector {
 
     public void setupSdCard() {
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      /*  Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("KiezBrüller");
         alert.setHeaderText("Setup SD-Card");
         alert.setContentText("No kiezbrüller configured SD-Card was found. To initialize a new card " +
@@ -78,6 +78,6 @@ public class SdCardConnector {
             makeItBrueller(volumesAfter.get(0));
         } else {
             setupSdCard();
-        }
+        }*/
     }
 }
