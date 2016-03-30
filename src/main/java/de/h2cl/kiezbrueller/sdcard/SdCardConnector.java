@@ -1,5 +1,6 @@
 package de.h2cl.kiezbrueller.sdcard;
 
+import java.beans.Transient;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 
+import de.h2cl.kiezbrueller.beans.SdCardConnected;
+
 /**
  * Created by martin.junker on 27.12.15.
  */
@@ -21,26 +24,21 @@ public class SdCardConnector {
 
     private static final String BRUELLER = ".brueller";
 
-    public List<File> volumes() {
-        LOG.info("looking for sdcards ...");
-        return Lists.newArrayList(
-                new File("/Volumes").listFiles(File::isDirectory));
-
-    }
-
+    /**
+     * Checks all volumes for hidden file and returns SdCardConnected if found.
+     * 
+     * @return optionalSdCard
+     */
     public Optional<SdCardConnected> lookForBrueller() {
         return volumes().stream().filter(this::checkIsBrueller).map(SdCardConnected::new).findFirst();
     }
 
-    public boolean checkIsBrueller(File sdcard) {
-        boolean isBrueller = sdcard.listFiles((dir, name) -> {
-            return name.equals(BRUELLER);
-        }).length > 0;
-        LOG.debug("check isBrueller was {} for sdcard {}", isBrueller, sdcard.getName());
-        return isBrueller;
-    }
-
-    public boolean makeItBrueller(File sdcard) {
+    /**
+     *
+     * @param sdcard
+     * @return true if creating brueller file was successful
+     */
+    public boolean makeItBrueller(final File sdcard) {
         try {
             return new File(sdcard.getAbsolutePath() + "/" + BRUELLER).createNewFile();
         } catch (IOException e) {
@@ -49,7 +47,19 @@ public class SdCardConnector {
         }
     }
 
-    public void setupSdCard() {
+    private List<File> volumes() {
+        LOG.info("looking for sdcards ...");
+        return Lists.newArrayList(
+                new File("/Volumes").listFiles(File::isDirectory));
+    }
+
+    private boolean checkIsBrueller(File sdcard) {
+        boolean isBrueller = sdcard.listFiles((dir, name) -> name.equals(BRUELLER)).length > 0;
+        LOG.debug("check isBrueller was {} for sdcard {}", isBrueller, sdcard.getName());
+        return isBrueller;
+    }
+
+    private void setupSdCard() {
 
         /*
          * Alert alert = new Alert(Alert.AlertType.INFORMATION);

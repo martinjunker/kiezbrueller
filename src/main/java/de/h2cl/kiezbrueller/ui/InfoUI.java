@@ -12,7 +12,7 @@ import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-import de.h2cl.kiezbrueller.sdcard.SdCardConnected;
+import de.h2cl.kiezbrueller.beans.SdCardConnected;
 import de.h2cl.kiezbrueller.sdcard.SdCardConnector;
 import de.h2cl.kiezbrueller.ui.views.ViewScopedView;
 

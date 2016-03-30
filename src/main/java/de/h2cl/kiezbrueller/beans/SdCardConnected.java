@@ -1,4 +1,4 @@
-package de.h2cl.kiezbrueller.sdcard;
+package de.h2cl.kiezbrueller.beans;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
-import de.h2cl.kiezbrueller.beans.BruellerMp3;
 import de.h2cl.kiezbrueller.utils.Utils;
 
 /**
