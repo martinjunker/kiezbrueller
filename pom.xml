@@ -11,6 +11,17 @@
     <name>Kiezbrüller</name>
     <url>http://h2cl.de</url>
     <description>Organize your mp3 files for the Kiezbrüller</description>
+    <developers>
+        <developer>
+            <name>Martin Junker</name>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>GNU General Public License (GPL)</name>
+            <url>http://www.gnu.org/licenses/gpl.txt</url>
+        </license>
+    </licenses>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -73,5 +84,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <developerConnection>scm:git:ssh://git@github.com/idealojunker/kiezbrueller.git</developerConnection>
+        <connection>scm:git:git://github.com/idealojunker/kiezbrueller.git</connection>
+        <tag>HEAD</tag>
+        <url>https://github.com/idealojunker/kiezbrueller</url>
+    </scm>
+
 
 </project>
