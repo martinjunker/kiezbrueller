@@ -1,9 +1,22 @@
 package de.h2cl.kiezbrueller.utils;
 
+/**
+ * Created by martin.junker on 09.03.16.
+ */
 public final class Utils {
 
-    public static int coordinatesToPos(Integer x, Integer y) {
-        return y * 2 + x + 1;
+    private Utils() {
+    }
+
+    /**
+     * Turns the grid layout into array index. Only valid for 2 * col?
+     * 
+     * @param col
+     * @param row
+     * @return position
+     */
+    public static int coordinatesToPos(Integer col, Integer row) {
+        return row * 2 + col + 1;
     }
 
     public static String calcSongName(int position) {
@@ -14,6 +27,11 @@ public final class Utils {
         }
     }
 
+    /**
+     *
+     * @param bytes
+     * @return humanReadableByteCount
+     */
     public static String humanReadableByteCount(long bytes) {
         int unit = 1000;
         if (bytes < unit) {

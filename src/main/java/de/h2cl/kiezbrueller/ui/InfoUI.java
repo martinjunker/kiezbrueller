@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -13,8 +14,9 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import de.h2cl.kiezbrueller.beans.SdCardConnected;
-import de.h2cl.kiezbrueller.sdcard.SdCardConnector;
-import de.h2cl.kiezbrueller.ui.views.ViewScopedView;
+import de.h2cl.kiezbrueller.sdcard.MacOsSdCardConnector;
+import de.h2cl.kiezbrueller.ui.views.DefaultView;
+import de.h2cl.kiezbrueller.ui.views.SinglePlayerView;
 
 /**
  * Created by martin.junker on 09.03.16.
@@ -28,50 +30,77 @@ public class InfoUI extends UI {
     private SpringViewProvider viewProvider;
 
     @Autowired
-    private SdCardConnector sdCardConnector;
-
-    private Optional<SdCardConnected> sdCardConnected;
+    private MacOsSdCardConnector sdCardConnector;
 
     @Override
     protected void init(VaadinRequest request) {
-        final VerticalLayout root = new VerticalLayout();
-        root.setSizeFull();
-        root.setMargin(true);
-        root.setSpacing(true);
-        setContent(root);
+
+        final VerticalLayout rootLayout = new VerticalLayout();
+        rootLayout.setSizeFull();
+        rootLayout.setMargin(true);
+        rootLayout.setSpacing(true);
+        setContent(rootLayout);
 
         final CssLayout navigationBar = new CssLayout();
         navigationBar.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        navigationBar.addComponent(createNavigationButton("View Scoped View",
-                ViewScopedView.VIEW_NAME));
-        root.addComponent(navigationBar);
 
+        navigationBar.addComponent(createHomeButton());
+        navigationBar.addComponent(createPlayerButton());
+        navigationBar.addComponent(createRefreshButton());
+        rootLayout.addComponent(navigationBar);
+
+        // add view container
         final Panel viewContainer = new Panel();
         viewContainer.setSizeFull();
-        root.addComponent(viewContainer);
-        root.setExpandRatio(viewContainer, 1.0f);
+        rootLayout.addComponent(viewContainer);
+        rootLayout.setExpandRatio(viewContainer, 1.0f);
 
-        Navigator navigator = new Navigator(this, viewContainer);
+        // add a footer
+        rootLayout.addComponent(createFooter());
+
+        // connect navigator and viewprovider
+        final Navigator navigator = new Navigator(this, viewContainer);
         navigator.addProvider(viewProvider);
 
-        // clicklistener for
-        Button button = new Button("look for sdcard",
-                event -> lookForBrueller());
-        button.addStyleName(ValoTheme.BUTTON_SMALL);
-        navigationBar.addComponent(button);
+
     }
 
-    private Button createNavigationButton(final String caption, final String viewName) {
-        Button button = new Button(caption);
-        button.addStyleName(ValoTheme.BUTTON_SMALL);
-        // If you didn't choose Java 8 when creating the project, convert this to an anonymous listener class
-        button.addClickListener(event -> getUI().getNavigator().navigateTo(viewName));
-        return button;
+    private Component createFooter() {
+        final Label footer = new Label();
+        final Optional<SdCardConnected> sdCardConnected = sdCardConnector.lookForBrueller();
+
+        if (sdCardConnected.isPresent()) {
+            footer.setValue(sdCardConnected.get().niceSpaceString());
+        } else {
+            footer.setValue("not connected to sdcard");
+        }
+        return footer;
+    }
+
+    private Button createPlayerButton() {
+        final Button playerButton = new Button("");
+        playerButton.addStyleName(ValoTheme.BUTTON_SMALL);
+        playerButton.setIcon(FontAwesome.LIST);
+        playerButton.addClickListener(event -> getUI().getNavigator().navigateTo(SinglePlayerView.VIEW_NAME));
+        return playerButton;
+    }
+
+    private Button createRefreshButton() {
+        final Button refreshButton = new Button("", event -> lookForBrueller());
+        refreshButton.setIcon(FontAwesome.REFRESH);
+        refreshButton.addStyleName(ValoTheme.BUTTON_SMALL);
+        return refreshButton;
+    }
+
+    private Button createHomeButton() {
+        final Button homeButton = new Button("", event -> getUI().getNavigator().navigateTo(DefaultView.VIEW_NAME));
+        homeButton.setIcon(FontAwesome.HOME);
+        homeButton.addStyleName(ValoTheme.BUTTON_SMALL);
+        return homeButton;
     }
 
     private void lookForBrueller() {
-        sdCardConnected = sdCardConnector.lookForBrueller();
-        if (sdCardConnected.isPresent()) {
+        if (sdCardConnector.lookForBrueller().isPresent()) {
             Notification.show("Connected!");
         } else {
             Notification.show("No sdcard found!");

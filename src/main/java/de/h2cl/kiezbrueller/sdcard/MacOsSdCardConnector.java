@@ -1,6 +1,5 @@
 package de.h2cl.kiezbrueller.sdcard;
 
-import java.beans.Transient;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -18,9 +17,9 @@ import de.h2cl.kiezbrueller.beans.SdCardConnected;
  * Created by martin.junker on 27.12.15.
  */
 @Component
-public class SdCardConnector {
+public class MacOsSdCardConnector {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SdCardConnector.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MacOsSdCardConnector.class);
 
     private static final String BRUELLER = ".brueller";
 
@@ -53,7 +52,7 @@ public class SdCardConnector {
                 new File("/Volumes").listFiles(File::isDirectory));
     }
 
-    private boolean checkIsBrueller(File sdcard) {
+    private boolean checkIsBrueller(final File sdcard) {
         boolean isBrueller = sdcard.listFiles((dir, name) -> name.equals(BRUELLER)).length > 0;
         LOG.debug("check isBrueller was {} for sdcard {}", isBrueller, sdcard.getName());
         return isBrueller;
