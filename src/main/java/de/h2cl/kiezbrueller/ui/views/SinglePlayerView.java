@@ -15,9 +15,9 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 import de.h2cl.kiezbrueller.beans.BruellerMp3;
+import de.h2cl.kiezbrueller.beans.ButtonLayout;
 import de.h2cl.kiezbrueller.beans.SdCardConnected;
 import de.h2cl.kiezbrueller.sdcard.MacOsSdCardConnector;
-import de.h2cl.kiezbrueller.utils.Utils;
 
 /**
  * Created by martin.junker on 09.03.16.
@@ -50,6 +50,8 @@ public class SinglePlayerView extends VerticalLayout implements View {
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         // the view is constructed in the init() method()
+        generateMatrixGrid(3, 2);
+
     }
 
     private void generateMatrixGrid(final int rows, final int columns) {
@@ -69,7 +71,7 @@ public class SinglePlayerView extends VerticalLayout implements View {
 
         for (int row = 0; row < sample.getRows(); row++) {
             for (int col = 0; col < sample.getColumns(); col++) {
-                sample.addComponent(new Label(songs.get(Utils.coordinatesToPos(row, col)).title() + col + "/" + row), col, row);
+                sample.addComponent(new Label(songs.get(ButtonLayout.COL3ROW2.coordinatesToPos(row, col)).title() + col + "/" + row), col, row);
                 sample.setRowExpandRatio(row, 0.0f);
                 sample.setColumnExpandRatio(col, 0.0f);
             }

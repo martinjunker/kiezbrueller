@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.codahale.metrics.annotation.Timed;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
@@ -34,6 +35,7 @@ public class SdCardConnected {
     /**
      * @return songs
      */
+    @Timed
     public Map<Integer, BruellerMp3> songs() {
         Map<Integer, BruellerMp3> songs = new HashMap<>();
 
@@ -70,6 +72,7 @@ public class SdCardConnected {
         return sdcardRoot.getTotalSpace();
     }
 
+    @Timed
     public String niceSpaceString() {
         return sdcardRoot.getName() + ": " +
                 Utils.humanReadableByteCount(getFreeSpace())

@@ -8,17 +8,6 @@ public final class Utils {
     private Utils() {
     }
 
-    /**
-     * Turns the grid layout into array index. Only valid for 2 * col?
-     * 
-     * @param col
-     * @param row
-     * @return position
-     */
-    public static int coordinatesToPos(Integer col, Integer row) {
-        return row * 2 + col + 1;
-    }
-
     public static String calcSongName(int position) {
         if (position > 9) {
             return "010song.mp3";
