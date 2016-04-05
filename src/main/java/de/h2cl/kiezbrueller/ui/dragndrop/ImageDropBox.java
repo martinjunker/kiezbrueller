@@ -1,4 +1,4 @@
-package de.h2cl.kiezbrueller.dragndrop;
+package de.h2cl.kiezbrueller.ui.dragndrop;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,7 +17,6 @@ import com.vaadin.ui.*;
 /**
  * Created by martin.junker on 31.03.16.
  */
-
 @StyleSheet("dragndropexample.css")
 public class ImageDropBox extends DragAndDropWrapper implements
         DropHandler {
