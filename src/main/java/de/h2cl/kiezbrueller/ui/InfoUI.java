@@ -1,9 +1,5 @@
 package de.h2cl.kiezbrueller.ui;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.FontAwesome;
@@ -12,11 +8,13 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-
 import de.h2cl.kiezbrueller.beans.SdCardConnected;
 import de.h2cl.kiezbrueller.sdcard.MacOsSdCardConnector;
 import de.h2cl.kiezbrueller.ui.views.DefaultView;
 import de.h2cl.kiezbrueller.ui.views.SinglePlayerView;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Optional;
 
 /**
  * Created by martin.junker on 09.03.16.
@@ -56,6 +54,7 @@ public class InfoUI extends UI {
         rootLayout.setExpandRatio(viewContainer, 1.0f);
 
         // add a footer
+
         rootLayout.addComponent(createFooter());
 
         // connect navigator and viewprovider
@@ -66,14 +65,19 @@ public class InfoUI extends UI {
     }
 
     private Component createFooter() {
-        final Label footer = new Label();
+        
+        final CssLayout footer = new CssLayout();
+        footer.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+
+        final Label sdCardInfo = new Label();
         final Optional<SdCardConnected> sdCardConnected = sdCardConnector.lookForBrueller();
 
         if (sdCardConnected.isPresent()) {
-            footer.setValue(sdCardConnected.get().niceSpaceString());
+            sdCardInfo.setValue(sdCardConnected.get().niceSpaceString());
         } else {
-            footer.setValue("not connected to sdcard");
+            sdCardInfo.setValue("not connected to sdcard");
         }
+        footer.addComponent(sdCardInfo);
         return footer;
     }
 

@@ -27,7 +27,7 @@ public enum ButtonLayout {
     }
 
     /**
-     * Turns the grid layout into array index. Only valid for 2 * col?
+     * Turns the grid layout into array index.
      *
      * @param col
      * @param row
@@ -46,5 +46,13 @@ public enum ButtonLayout {
                 throw new IllegalArgumentException("unknown ButtonLayout " + name());
 
         }
+    }
+
+    public Integer getCols() {
+        return cols;
+    }
+
+    public Integer getRows() {
+        return rows;
     }
 }
