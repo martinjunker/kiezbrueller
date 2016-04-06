@@ -34,13 +34,27 @@ public class Mp3DropBox extends VerticalLayout {
         this.bruellerMp3 = bruellerMp3;
         this.position = position;
 
+        // headline
         addComponent(new Label("Button " + position));
 
+        // drop area
         CssLayout dropPane = new CssLayout();
         dropPane.setWidth("200px");
         dropPane.setHeight("200px");
         dropPane.addStyleName("image-drop-pane");
 
+        // add label
+        dropPane.addComponent(new Label(bruellerMp3.title()));
+
+        final StreamResource.StreamSource streamSource = (StreamResource.StreamSource) () -> {
+            if (bruellerMp3.imageSmall() != null) {
+                return bruellerMp3.imageSmall();
+            }
+            return null;
+        };
+        final StreamResource resource = new StreamResource(streamSource,
+                bruellerMp3.getSource().getName());
+        dropPane.addComponent(new Image(null, resource));
 
         Mp3DragAndDropHandler dropBox = new Mp3DragAndDropHandler(dropPane);
         dropBox.setSizeUndefined();
@@ -66,11 +80,7 @@ public class Mp3DropBox extends VerticalLayout {
             super(root);
             setDropHandler(this);
             setDragStartMode(DragStartMode.HTML5);
-            setHTML5DataFlavor("text/plain",
-                    "This text was drag'n'dropped from Vaadin.");
-            setHTML5DataFlavor("text/html",
-                    "<h1>HTML Content</h1><p>This text was drag&quot;n&quot;dropped from Vaadin.");
-
+            setHTML5DataFlavor("text/plain", bruellerMp3.getSource().getAbsolutePath());
         }
 
         @Override
@@ -102,18 +112,15 @@ public class Mp3DropBox extends VerticalLayout {
                             public void onProgress(StreamVariable.StreamingProgressEvent event) {
                             }
 
-                            public void streamingStarted(
-                                    StreamingStartEvent event) {
+                            public void streamingStarted(StreamingStartEvent event) {
                             }
 
-                            public void streamingFinished(
-                                    StreamingEndEvent event) {
+                            public void streamingFinished(StreamingEndEvent event) {
                                 progress.setVisible(false);
                                 showFile(fileName, html5File.getType(), bas);
                             }
 
-                            public void streamingFailed(
-                                    StreamingErrorEvent event) {
+                            public void streamingFailed(StreamingErrorEvent event) {
                                 progress.setVisible(false);
                             }
 

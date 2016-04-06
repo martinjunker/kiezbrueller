@@ -36,6 +36,7 @@ public class BruellerMp3 {
         this.mp3File = new Mp3File(source);
     }
 
+
     public String title() {
         return mp3File.getId3v1Tag().getArtist() + " - " + mp3File.getId3v1Tag().getTitle();
     }
@@ -44,8 +45,8 @@ public class BruellerMp3 {
         return new Image(new ByteArrayInputStream(mp3File.getId3v2Tag().getAlbumImage()));
     }
 
-    public Image imageSmall() {
-        return new Image(new ByteArrayInputStream(mp3File.getId3v2Tag().getAlbumImage()), 60.0, 60.0, true, true);
+    public ByteArrayInputStream imageSmall() {
+        return new ByteArrayInputStream(mp3File.getId3v2Tag().getAlbumImage());
     }
 
 
@@ -68,5 +69,7 @@ public class BruellerMp3 {
         }
     }
 
-
+    public File getSource() {
+        return source;
+    }
 }

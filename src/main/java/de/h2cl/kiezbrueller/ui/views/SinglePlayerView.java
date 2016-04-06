@@ -27,7 +27,7 @@ public class SinglePlayerView extends VerticalLayout implements View {
     @Autowired
     private MacOsSdCardConnector sdCardConnector;
 
-    private GridLayout sample;
+    private GridLayout gridLayout;
 
     @PostConstruct
     void init() {
@@ -35,10 +35,12 @@ public class SinglePlayerView extends VerticalLayout implements View {
         setSpacing(true);
 
         // Create a grid layout
-        sample = new GridLayout();
-        sample.addStyleName("outlined");
-        sample.setSizeFull();
-        addComponent(sample);
+        gridLayout = new GridLayout();
+        gridLayout.setStyleName("dotted");
+        gridLayout.setSizeFull();
+        gridLayout.setHeight("");
+
+        addComponent(gridLayout);
 
         generateMatrixGrid(ButtonLayout.COL3ROW2);
 
@@ -51,9 +53,9 @@ public class SinglePlayerView extends VerticalLayout implements View {
     }
 
     private void generateMatrixGrid(ButtonLayout buttonLayout) {
-        sample.removeAllComponents();
-        sample.setRows(buttonLayout.getRows());
-        sample.setColumns(buttonLayout.getCols());
+        gridLayout.removeAllComponents();
+        gridLayout.setRows(buttonLayout.getRows());
+        gridLayout.setColumns(buttonLayout.getCols());
 
         // load sdcard
         final Optional<SdCardConnected> sdCardConnected = sdCardConnector.lookForBrueller();
@@ -67,13 +69,13 @@ public class SinglePlayerView extends VerticalLayout implements View {
 
         Integer position;
 
-        for (int row = 0; row < sample.getRows(); row++) {
-            for (int col = 0; col < sample.getColumns(); col++) {
+        for (int row = 0; row < gridLayout.getRows(); row++) {
+            for (int col = 0; col < gridLayout.getColumns(); col++) {
 
                 position = ButtonLayout.COL3ROW2.coordinatesToPos(col, row);
-                sample.addComponent(new Mp3DropBox(songs.get(position), position));
-                sample.setRowExpandRatio(row, 0.0f);
-                sample.setColumnExpandRatio(col, 0.0f);
+                gridLayout.addComponent(new Mp3DropBox(songs.get(position), position));
+                gridLayout.setRowExpandRatio(row, 0.0f);
+                gridLayout.setColumnExpandRatio(col, 0.0f);
             }
         }
     }

@@ -14,7 +14,7 @@ java -jar kiezbrueller-x.x.x.jar
 
 ## Hardware
 You need the mp3 player:
-<http://www.elv.de/mp3-sound-modul-msm-2-komplettbausatz.html>
+<http://www.elv.de/mp3-sound-modul-msm-2-fertiggeraet.html>
 
 ## Usage
 1. Plug in your sdcard

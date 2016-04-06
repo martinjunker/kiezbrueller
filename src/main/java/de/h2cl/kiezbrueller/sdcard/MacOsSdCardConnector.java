@@ -1,18 +1,16 @@
 package de.h2cl.kiezbrueller.sdcard;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-
+import com.codahale.metrics.annotation.Timed;
+import com.google.common.collect.Lists;
+import de.h2cl.kiezbrueller.beans.SdCardConnected;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.codahale.metrics.annotation.Timed;
-import com.google.common.collect.Lists;
-
-import de.h2cl.kiezbrueller.beans.SdCardConnected;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by martin.junker on 27.12.15.
@@ -31,7 +29,10 @@ public class MacOsSdCardConnector {
      */
     @Timed
     public Optional<SdCardConnected> lookForBrueller() {
-        return volumes().stream().filter(this::checkIsBrueller).map(SdCardConnected::new).findFirst();
+        return volumes().stream()
+                .filter(this::checkIsBrueller)
+                .map(SdCardConnected::new)
+                .findFirst();
     }
 
     /**
