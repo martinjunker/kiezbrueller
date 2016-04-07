@@ -43,18 +43,15 @@ public class Mp3DropBox extends VerticalLayout {
         dropPane.setHeight("200px");
         dropPane.addStyleName("image-drop-pane");
 
-        // add label
-        dropPane.addComponent(new Label(bruellerMp3.title()));
+        HorizontalLayout layout = new HorizontalLayout();
+        layout.setSizeFull();
+        layout.setMargin(false);
 
-        final StreamResource.StreamSource streamSource = (StreamResource.StreamSource) () -> {
-            if (bruellerMp3.imageSmall() != null) {
-                return bruellerMp3.imageSmall();
-            }
-            return null;
-        };
-        final StreamResource resource = new StreamResource(streamSource,
-                bruellerMp3.getSource().getName());
-        dropPane.addComponent(new Image(null, resource));
+        Image image = createImage(bruellerMp3);
+        layout.addComponent(image);
+        layout.setComponentAlignment(image, Alignment.MIDDLE_CENTER);
+
+        dropPane.addComponent(layout);
 
         Mp3DragAndDropHandler dropBox = new Mp3DragAndDropHandler(dropPane);
         dropBox.setSizeUndefined();
@@ -70,6 +67,21 @@ public class Mp3DropBox extends VerticalLayout {
         progress.setIndeterminate(true);
         progress.setVisible(false);
         addComponent(progress);
+    }
+
+    private Image createImage(BruellerMp3 bruellerMp3) {
+        final StreamResource.StreamSource streamSource = (StreamResource.StreamSource) () -> {
+            if (bruellerMp3.imageSmall() != null) {
+                return bruellerMp3.imageSmall();
+            }
+            // return FontAwesome.QUESTION_CIRCLE;
+            return null;
+        };
+        final StreamResource resource = new StreamResource(streamSource, bruellerMp3.getSource().getName());
+
+        final Image image = new Image(bruellerMp3.title(), resource);
+        image.setWidth(170.0f, Unit.PIXELS);
+        return image;
     }
 
     private class Mp3DragAndDropHandler extends DragAndDropWrapper implements DropHandler {
