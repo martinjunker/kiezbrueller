@@ -8,6 +8,9 @@ import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamVariable;
 import com.vaadin.ui.*;
 import de.h2cl.kiezbrueller.beans.BruellerMp3;
+import de.h2cl.kiezbrueller.ui.views.SinglePlayerView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,6 +21,8 @@ import java.io.OutputStream;
  * It has a postion and maybe an mp3 file is located at that position.
  */
 public class Mp3DropBox extends VerticalLayout {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Mp3DropBox.class);
 
     private final ProgressBar progress;
 
@@ -150,10 +155,16 @@ public class Mp3DropBox extends VerticalLayout {
                 if (text != null) {
                     showText(text);
                 }
+
+                Component draggedComponent = tr.getDraggedComponent();
+                LOG.info("dragged component: " + draggedComponent);
             }
         }
 
         private void showText(String text) {
+
+            SinglePlayerView root = (SinglePlayerView) getCompositionRoot();
+            root.getSdCardConnector();
             showComponent(new Label(text), "Wrapped text content");
         }
 

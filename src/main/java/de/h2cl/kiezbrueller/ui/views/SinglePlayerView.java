@@ -8,7 +8,7 @@ import com.vaadin.ui.VerticalLayout;
 import de.h2cl.kiezbrueller.beans.BruellerMp3;
 import de.h2cl.kiezbrueller.beans.ButtonLayout;
 import de.h2cl.kiezbrueller.beans.SdCardConnected;
-import de.h2cl.kiezbrueller.sdcard.MacOsSdCardConnector;
+import de.h2cl.kiezbrueller.sdcard.SdCardConnector;
 import de.h2cl.kiezbrueller.ui.dragndrop.Mp3DropBox;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,7 +25,7 @@ public class SinglePlayerView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "singlePlayer";
 
     @Autowired
-    private MacOsSdCardConnector sdCardConnector;
+    private SdCardConnector sdCardConnector;
 
     private GridLayout gridLayout;
 
@@ -78,5 +78,9 @@ public class SinglePlayerView extends VerticalLayout implements View {
                 gridLayout.setColumnExpandRatio(col, 0.0f);
             }
         }
+    }
+
+    public SdCardConnector getSdCardConnector() {
+        return sdCardConnector;
     }
 }

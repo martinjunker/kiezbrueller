@@ -9,7 +9,7 @@ import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import de.h2cl.kiezbrueller.beans.SdCardConnected;
-import de.h2cl.kiezbrueller.sdcard.MacOsSdCardConnector;
+import de.h2cl.kiezbrueller.sdcard.SdCardConnector;
 import de.h2cl.kiezbrueller.ui.views.DefaultView;
 import de.h2cl.kiezbrueller.ui.views.SinglePlayerView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class InfoUI extends UI {
     private SpringViewProvider viewProvider;
 
     @Autowired
-    private MacOsSdCardConnector sdCardConnector;
+    private SdCardConnector sdCardConnector;
 
     @Override
     protected void init(VaadinRequest request) {

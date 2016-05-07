@@ -16,7 +16,7 @@ import java.util.Optional;
  * Created by martin.junker on 27.12.15.
  */
 @Component
-public class MacOsSdCardConnector {
+public class MacOsSdCardConnector implements SdCardConnector {
 
     private static final Logger LOG = LoggerFactory.getLogger(MacOsSdCardConnector.class);
 
@@ -28,6 +28,7 @@ public class MacOsSdCardConnector {
      * @return optionalSdCard
      */
     @Timed
+    @Override
     public Optional<SdCardConnected> lookForBrueller() {
         return volumes().stream()
                 .filter(this::checkIsBrueller)
