@@ -1,20 +1,37 @@
 package de.h2cl.kiezbrueller.ui.dragndrop;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
 import com.vaadin.event.dd.acceptcriteria.AcceptAll;
 import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamVariable;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.DragAndDropWrapper;
+import com.vaadin.ui.Embedded;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Html5File;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.ProgressBar;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
+
 import de.h2cl.kiezbrueller.beans.BruellerMp3;
 import de.h2cl.kiezbrueller.ui.views.SinglePlayerView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 
 /**
  * Mp3DropBox is a digital representation of a player button.
@@ -52,9 +69,7 @@ public class Mp3DropBox extends VerticalLayout {
         layout.setSizeFull();
         layout.setMargin(false);
 
-        Image image = createImage(bruellerMp3);
-        layout.addComponent(image);
-        layout.setComponentAlignment(image, Alignment.MIDDLE_CENTER);
+        addImageIfMp3Exists(bruellerMp3, layout);
 
         dropPane.addComponent(layout);
 
@@ -74,16 +89,22 @@ public class Mp3DropBox extends VerticalLayout {
         addComponent(progress);
     }
 
-    private Image createImage(BruellerMp3 bruellerMp3) {
-        final StreamResource.StreamSource streamSource = (StreamResource.StreamSource) () -> {
-            if (bruellerMp3.imageSmall() != null) {
-                return bruellerMp3.imageSmall();
-            }
-            // return FontAwesome.QUESTION_CIRCLE;
-            return null;
-        };
-        final StreamResource resource = new StreamResource(streamSource, bruellerMp3.getSource().getName());
+    private void addImageIfMp3Exists(final BruellerMp3 bruellerMp3, final HorizontalLayout layout) {
+        if (bruellerMp3 == null || bruellerMp3.imageSmall() == null) {
+            Label label = new Label();
+            label.setIcon(FontAwesome.TIMES_CIRCLE_O);
+            layout.addComponent(label);
+            layout.setComponentAlignment(label, Alignment.MIDDLE_CENTER);
+        } else {
+            Image image = createImage(bruellerMp3);
+            layout.addComponent(image);
+            layout.setComponentAlignment(image, Alignment.MIDDLE_CENTER);
+        }
+    }
 
+    private Image createImage(BruellerMp3 bruellerMp3) {
+        final StreamResource.StreamSource streamSource = (StreamResource.StreamSource) bruellerMp3::imageSmall;
+        final StreamResource resource = new StreamResource(streamSource, bruellerMp3.getSource().getName());
         final Image image = new Image(bruellerMp3.title(), resource);
         image.setWidth(170.0f, Unit.PIXELS);
         return image;
@@ -97,7 +118,9 @@ public class Mp3DropBox extends VerticalLayout {
             super(root);
             setDropHandler(this);
             setDragStartMode(DragStartMode.HTML5);
-            setHTML5DataFlavor("text/plain", bruellerMp3.getSource().getAbsolutePath());
+            if (bruellerMp3 != null) {
+                setHTML5DataFlavor("text/plain", bruellerMp3.getSource().getAbsolutePath());
+            }
         }
 
         @Override
